@@ -1,2 +1,4 @@
 aiohttp
 pyyaml
+pillow
+pytest-aiohttp

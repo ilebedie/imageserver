@@ -2,7 +2,7 @@ import pathlib
 import yaml
 
 BASE_DIR = pathlib.Path(__file__).parent
-config_path = BASE_DIR / 'config' / 'imageserver.yaml'
+config_path = BASE_DIR / 'config' / 'imageserver_local.yaml'
 
 
 def get_config(path):

@@ -1,0 +1,4 @@
+NUM_THREADS: 2
+DEBUG: True
+S3:
+  Bucket: imgs
