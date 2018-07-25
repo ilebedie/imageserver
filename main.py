@@ -32,7 +32,6 @@ def main():
             max_workers=config['NUM_THREADS']
         )
         loop = asyncio.get_event_loop()
-
         app['config'] = config
         setup_handlers(app, loop, executor)
         setup_routes(app)
