@@ -8,10 +8,10 @@ class StorageHandler():
 
 
     async def upload(request):
-        try:
-            mime, body = await self.loop.run_in_executor(
-                self.executor,
-                generate_thumbnail
-            )
+        #try:
+            #mime, body = await self.loop.run_in_executor(
+            #    self.executor,
+            #    generate_thumbnail
+            #)
             #s3.put
-            return web.Response(text='PONG')
+        return web.Response(text='PONG')

@@ -5,9 +5,9 @@ import logging
 from aiohttp import web
 import concurrent.futures
 
-from .routes import setup_routes
-from .handlers import setup_handlers
-from .settings import config
+from routes import setup_routes
+from handlers import setup_handlers
+from settings import config
 
 
 logger = logging.getLogger('main')
@@ -20,23 +20,27 @@ def main():
         parser = argparse.ArgumentParser()
         parser.add_argument('--host', default='127.0.0.1', type=str)
         parser.add_argument('--port', default=8000, type=int)
-        host, port = parser.parse_args()
+        args = parser.parse_args()
 
-        config['HOST'] = config.get('HOST') or host
-        config['PORT'] = config.get('PORT') or port
+        config['HOST'] = config.get('HOST') or args.host
+        config['PORT'] = config.get('PORT') or args.port
 
         middlewares = []
         app = web.Application(middlewares=middlewares)
 
         executor = concurrent.futures.ThreadPoolExecutor(
-            max_workers=config['NUM_CORES']
+            max_workers=config['NUM_THREADS']
         )
         loop = asyncio.get_event_loop()
 
         app['config'] = config
         setup_handlers(app, loop, executor)
         setup_routes(app)
-        web.run_app(app)
+        web.run_app(
+            app,
+            host=config['HOST'],
+            port=config['PORT']
+        )
     finally:
         logger.info('Exiting app')
 
