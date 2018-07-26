@@ -11,13 +11,10 @@ from settings import config
 from storage import setup_storage
 
 
-logger = logging.getLogger('main')
-logger.setLevel(logging.DEBUG)
-logger.propagate = False
-
-
 def main():
     try:
+        logging.basicConfig(level=logging.DEBUG)
+
         parser = argparse.ArgumentParser()
         parser.add_argument('--host', default='127.0.0.1', type=str)
         parser.add_argument('--port', default=8000, type=int)
@@ -43,7 +40,7 @@ def main():
             port=config['PORT']
         )
     finally:
-        logger.info('Exiting app')
+        logging.info('Exiting app')
 
 
 if __name__ == '__main__':

@@ -1,6 +1,7 @@
 import aiofiles
 
 import os
+import logging
 from os.path import isfile, join
 
 from settings import config
@@ -17,6 +18,11 @@ class FileSystemStorage:
             os.makedirs(self.asset_path)
         self.files = self.get_list_of_existing_files()
 
+        logging.debug('Contents of file storage:')
+        for f in self.files:
+            logging.debug(f'--- {f}')
+
+
     async def put(self, buf, mime='jpeg'):
         hash = await self.loop.run_in_executor(
             self.executor,
@@ -24,10 +30,10 @@ class FileSystemStorage:
             buf
         )
         filename = f'{str(hash)}.{mime}'
-        fpath = join(self.asset_path, filename)
-        if fpath in self.files:
+        if filename in self.files:
             return False, filename
 
+        fpath = join(self.asset_path, filename)
         async with aiofiles.open(fpath, 'wb') as f:
             await f.write(buf)
 
