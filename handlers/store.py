@@ -3,14 +3,15 @@ from aiohttp import web
 from storage import get_storage
 
 
+routes = web.RouteTableDef()
+
 class StorageHandler():
     def __init__(self,  loop, executor):
         self.loop = loop
         self.executor = executor
         self.storage = get_storage()
 
-
-    async def upload_jpeg(request):
+    async def upload_jpeg(self, request):
         reader = await request.multipart()
 
         # /!\ Don't forget to validate your inputs /!\

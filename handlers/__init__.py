@@ -6,10 +6,10 @@ def setup_handlers(app, loop, executor):
     ping_handler = PingHandler()
     storage_handler = StorageHandler(loop, executor)
 
-    app['handlers'] = [
-        ping_handler,
-        storage_handler,
-    ]
+    app['handlers'] = {
+        'ping': ping_handler,
+        'storage': storage_handler,
+    }
 
 
 class PingHandler():

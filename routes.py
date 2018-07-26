@@ -6,5 +6,8 @@ def setup_routes(app):
     app.add_routes([
         web.get('/', handlers.PingHandler.handle),
         web.get('/ping', handlers.PingHandler.handle),
-        web.post('/upload_jpeg', handlers.StorageHandler.upload_jpeg)
+        web.post(
+            '/upload_jpeg',
+            app['handlers']['storage'].upload_jpeg
+        )
     ])
