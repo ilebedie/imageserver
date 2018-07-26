@@ -1,5 +1,7 @@
 from aiohttp import web
 
+from storage import get_storage
+
 
 class StorageHandler():
     def __init__(self,  loop, executor):
@@ -14,4 +16,5 @@ class StorageHandler():
             #    generate_thumbnail
             #)
             #s3.put
+
         return web.Response(text='PONG')

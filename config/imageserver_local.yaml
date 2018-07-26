@@ -1,4 +1,5 @@
 NUM_THREADS: 2
 DEBUG: True
+FS_STORAGE_PATH: /Users/ivan/git/imageserver/assets/
 S3:
   Bucket: imgs

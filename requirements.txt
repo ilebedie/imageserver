@@ -2,3 +2,4 @@ aiohttp
 pyyaml
 pillow
 pytest-aiohttp
+xxhash

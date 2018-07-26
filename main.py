@@ -8,6 +8,7 @@ import concurrent.futures
 from routes import setup_routes
 from handlers import setup_handlers
 from settings import config
+from storage import setup_storage
 
 
 logger = logging.getLogger('main')
@@ -34,6 +35,7 @@ def main():
         loop = asyncio.get_event_loop()
         app['config'] = config
         setup_handlers(app, loop, executor)
+        setup_storage(loop, executor)
         setup_routes(app)
         web.run_app(
             app,
