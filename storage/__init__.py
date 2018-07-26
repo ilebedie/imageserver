@@ -7,6 +7,7 @@ storage = None
 
 
 def setup_storage(loop, executor):
+    global storage
     if config['DEBUG']:
         storage = FileSystemStorage(loop, executor)
     else:
@@ -14,6 +15,7 @@ def setup_storage(loop, executor):
 
 
 def get_storage():
+    global storage
     if not storage:
         raise RuntimeError('NotInitialized')
 
