@@ -8,4 +8,4 @@ def get_hash(buf):
     hash = xxhash.xxh64()
     hash.update(buf)
 
-    return buf.hexdigest()
+    return hash.hexdigest()
