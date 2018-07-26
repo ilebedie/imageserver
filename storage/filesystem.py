@@ -21,15 +21,15 @@ class FileSystemStorage:
             get_hash,
             buf
         )
-
-        fpath = asset_path + hash + mime
+        filename = f`{str(hash)}.{mime}`
+        fpath = join(asset_path, filename)
         if fpath in self.files:
             return
-        else:
-            self.files.add(files)
 
         async with aiofiles.open(fpath, 'w') as f:
             await f.write(buf)
+
+        self.files.add(files)
 
     @classmethod
     def get_list_of_existing_files(cls):
