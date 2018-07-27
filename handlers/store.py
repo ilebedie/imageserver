@@ -1,6 +1,7 @@
 from aiohttp import web
 
 from storage import get_storage
+from image_processing import make_thumbnail
 
 
 routes = web.RouteTableDef()
@@ -35,13 +36,39 @@ class StorageHandler():
             size += len(chunk)
             chunk = await field.read_chunk()
 
-        stored, filename_out = await self.storage.put(buf)
+        stored, file_url = await self.storage.put(buf)
+        resp_json = {
+            'stored': stored,
+            'orig_file': file_url,
+        }
 
-        if not stored:
-            return web.Response(
-                text=f'{filename} was previously stored as {filename_out}'
+        field = await reader.next()
+        assert field.name == 'create_thumbnail'
+        create_thumbnail = await field.read(decode=True)
+
+        thubmnail_100 = None
+        thubmnail_200 = None
+
+        if create_thumbnail == b'true':
+            thumbnail_100 = await self.loop.run_in_executor(
+                self.executor,
+                make_thumbnail,
+                buf, 100
+            )
+            thumbnail_200 = await self.loop.run_in_executor(
+                self.executor,
+                make_thumbnail,
+                buf, 200
             )
 
-        return web.Response(
-            text=f'{filename} sized of {size} successfully stored as {filename_out}'
-        )
+            _, thumbn_100_url = await self.storage.put(
+                thumbnail_100
+            )
+            _, thumbn_200_url = await self.storage.put(
+                thumbnail_200
+            )
+            resp_json['thumbnail_100'] = thumbn_100_url
+            resp_json['thumbnail_200'] = thumbn_200_url
+
+
+        return web.json_response(resp_json)
