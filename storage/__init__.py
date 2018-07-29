@@ -8,8 +8,10 @@ storage = None
 
 def setup_storage(loop, executor):
     global storage
-    if config['DEBUG']:
+    if config['DEBUG'] and not storage:
         storage = FileSystemStorage(loop, executor)
+    elif storage:
+        raise RuntimeError('Storage has already been setup')
     else:
         raise NotImplementedError
 
