@@ -23,6 +23,4 @@ To run tests:
 ## TODO:
 Add various mime types
 
-Add basic authentication
-
 Add s3 storage

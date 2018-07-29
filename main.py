@@ -9,6 +9,7 @@ from routes import setup_routes
 from handlers import setup_handlers
 from settings import config
 from storage import setup_storage
+from middlewares import basic_auth_middleware
 
 
 def main():
@@ -23,7 +24,9 @@ def main():
         config['HOST'] = config.get('HOST') or args.host
         config['PORT'] = config.get('PORT') or args.port
 
-        middlewares = []
+        middlewares = [
+            basic_auth_middleware,
+        ]
         app = web.Application(middlewares=middlewares)
 
         executor = concurrent.futures.ThreadPoolExecutor(
