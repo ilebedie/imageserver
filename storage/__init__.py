@@ -3,22 +3,22 @@ from settings import config
 
 __all__ = ['get_storage', 'setup_storage']
 
-storage = None
+__storage = None
 
 
 def setup_storage(loop, executor):
-    global storage
-    if config['DEBUG'] and not storage:
-        storage = FileSystemStorage(loop, executor)
-    elif storage:
+    global __storage
+    if config['DEBUG'] and not __storage:
+        __storage = FileSystemStorage(loop, executor)
+    elif __storage:
         raise RuntimeError('Storage has already been setup')
     else:
         raise NotImplementedError
 
 
 def get_storage():
-    global storage
-    if not storage:
+    global __storage
+    if not __storage:
         raise RuntimeError('NotInitialized')
 
-    return storage
+    return __storage
