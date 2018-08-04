@@ -7,7 +7,11 @@ def setup_routes(app):
         web.get('/', handlers.PingHandler.handle),
         web.get('/ping', handlers.PingHandler.handle),
         web.post(
-            '/upload_jpeg',
+            '/upload-jpeg',
             app['handlers']['storage'].upload_jpeg
-        )
+        ),
+        web.post(
+            '/fetch-jpeg',
+            app['handlers']['storage'].fetch_jpeg
+        ),
     ])

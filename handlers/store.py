@@ -1,3 +1,4 @@
+import aiohttp
 from aiohttp import web
 
 from storage import get_storage
@@ -70,5 +71,22 @@ class StorageHandler():
             resp_json['thumbnail_100'] = thumbn_100_url
             resp_json['thumbnail_200'] = thumbn_200_url
 
-
         return web.json_response(resp_json)
+
+    async def fetch_jpeg(self, request):
+        url = request.get('url')
+        if not url:
+            return Response(status=400, text='Url is missing')
+        return Response(status=501, text='Url is missing')
+
+       # async with aiohttp.ClientSession() as session:
+       #     async with session.get(url) as resp:
+       #         await resp.content.read(10)
+       #         chunk await resp.content.read() # what is chunk_size
+       #         while True:
+       #             chunk = await resp.content.read() # what is chunk_size
+       # with open(filename, 'wb') as fd:
+       #         if not chunk:
+       #             break
+       #         fd.write(chunk)
+       # stored, file_url = await self.storage.put(buf)
