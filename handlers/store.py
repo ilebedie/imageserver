@@ -1,11 +1,10 @@
 import aiohttp
 from aiohttp import web
+import logging
 
 from storage import get_storage
 from image_processing import make_thumbnail
 
-
-routes = web.RouteTableDef()
 
 class StorageHandler():
     def __init__(self,  loop, executor):
@@ -36,6 +35,7 @@ class StorageHandler():
             buf += chunk
             size += len(chunk)
             chunk = await field.read_chunk()
+        logging.info(f'Uploaded {size} bytes')
 
         stored, file_url = await self.storage.put(buf)
         resp_json = {
@@ -74,19 +74,25 @@ class StorageHandler():
         return web.json_response(resp_json)
 
     async def fetch_jpeg(self, request):
-        url = request.get('url')
+        url = request.query.get('url')
+        #logging.info(request.query)
         if not url:
-            return Response(status=400, text='Url is missing')
-        return Response(status=501, text='Url is missing')
+            return web.Response(status=400, text='Url is missing')
 
-       # async with aiohttp.ClientSession() as session:
-       #     async with session.get(url) as resp:
-       #         await resp.content.read(10)
-       #         chunk await resp.content.read() # what is chunk_size
-       #         while True:
-       #             chunk = await resp.content.read() # what is chunk_size
-       # with open(filename, 'wb') as fd:
-       #         if not chunk:
-       #             break
-       #         fd.write(chunk)
-       # stored, file_url = await self.storage.put(buf)
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as resp:
+                size = 0
+                buf = b''
+                chunk = await resp.content.read(8192)
+                while chunk:
+                    buf += chunk
+                    size += len(chunk)
+                    chunk = await resp.content.read(8192)
+                logging.info(f'Uploaded {size} bytes')
+
+                stored, file_url = await self.storage.put(buf)
+                resp_json = {
+                    'stored': stored,
+                    'orig_file': file_url,
+                }
+                return web.json_response(resp_json)

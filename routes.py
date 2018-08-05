@@ -10,7 +10,7 @@ def setup_routes(app):
             '/upload-jpeg',
             app['handlers']['storage'].upload_jpeg
         ),
-        web.post(
+        web.get(
             '/fetch-jpeg',
             app['handlers']['storage'].fetch_jpeg
         ),
