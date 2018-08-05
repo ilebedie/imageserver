@@ -12,7 +12,7 @@ class StorageHandler():
         self.executor = executor
         self.storage = get_storage()
 
-    async def upload_jpeg(self, request):
+    async def upload_jpeg(self, request) -> web.json_response:
         reader = await request.multipart()
 
         # /!\ Don't forget to validate your inputs /!\
@@ -73,7 +73,7 @@ class StorageHandler():
 
         return web.json_response(resp_json)
 
-    async def fetch_jpeg(self, request):
+    async def fetch_jpeg(self, request) -> web.Response:
         url = request.query.get('url')
         #logging.info(request.query)
         if not url:
